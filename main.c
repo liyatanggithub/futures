@@ -76,7 +76,10 @@ void get_futures_text()
 		curl_multi_fdset(pCurlM, &FdRead, &FdWrite, &FdExcept, &MaxFd);
 		SelectReturn = select(MaxFd+1, &FdRead, &FdWrite, &FdExcept, &tv);
 		if(SOCKET_ERROR == SelectReturn)
+		{
+			CurlOk = 0;
 			break;
+		}
 		else if (0 == SelectReturn)
 			MaxCount--;
 		if(MaxCount==0)
@@ -95,8 +98,8 @@ void get_futures_text()
 	curl_global_cleanup();
 	time(&now);
 	timenow = localtime(&now);
-	if(get_futures_data(ReciveText)==0)
-		printf("%d\t%s",NowPrice,asctime(timenow));
+	get_futures_data(ReciveText);
+	printf("%d\t%s",NowPrice,asctime(timenow));
 }
 
 void main()
