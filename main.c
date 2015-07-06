@@ -12,8 +12,10 @@
 
 char FuturesUrl[100] = "http://hq.sinajs.cn/list=AG1512";
 char ReciveText[220];
+char TimeNow[35];
 int CurlOk;
 int NowPrice;
+time_t start1,end1,start2,end2,start3,end3;
 
 size_t write_data(char *buffer, size_t size, size_t nitems, void *outstream)
 {
@@ -54,8 +56,6 @@ void get_futures_text()
 	fd_set FdWrite;
 	fd_set FdExcept;
 	struct timeval tv;
-	time_t now;
-	struct tm *timenow;
 	tv.tv_sec 	= 1;
 	tv.tv_usec 	= 0;
 
@@ -96,16 +96,49 @@ void get_futures_text()
 	curl_easy_cleanup(pCurl);
 	curl_multi_cleanup(pCurlM);
 	curl_global_cleanup();
+	get_futures_data(ReciveText);
+	printf("%d\t%s",NowPrice,TimeNow);
+}
+
+void init_time()
+{
+	time_t now;
+	struct tm timenow;
+
+	time(&now);
+	timenow = *localtime(&now);
+	timenow.tm_hour = 9;
+	timenow.tm_min = 0;
+	timenow.tm_sec = 0;
+	start1=mktime(&timenow);
+	end1=start1+9000;
+	start2=end1+7200;
+	end2=start2+5400;
+	start3=end2+21600;
+	end3=start3+19800;
+}
+
+int time_is_on_trans()
+{
+	time_t now;
+	struct tm *timenow;
+
 	time(&now);
 	timenow = localtime(&now);
-	get_futures_data(ReciveText);
-	printf("%d\t%s",NowPrice,asctime(timenow));
+	strcpy(TimeNow,asctime(timenow));
+	if(((now>=start1)&&(now<=end1))||((now>=start2)&&(now<=end2))||((now>=start3)&&(now<=end3)))
+		return 1;
+	else if(now > end3)
+		init_time();
+	return 0;
 }
 
 void main()
 {
+	init_time();
 	while(1)
 	{
-		get_futures_text();
+		if(time_is_on_trans())
+			get_futures_text();
 	}
 }
