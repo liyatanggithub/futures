@@ -54,6 +54,8 @@ void get_futures_text()
 	fd_set FdWrite;
 	fd_set FdExcept;
 	struct timeval tv;
+	time_t now;
+	struct tm *timenow;
 	tv.tv_sec 	= 1;
 	tv.tv_usec 	= 0;
 
@@ -91,19 +93,16 @@ void get_futures_text()
 	curl_easy_cleanup(pCurl);
 	curl_multi_cleanup(pCurlM);
 	curl_global_cleanup();
+	time(&now);
+	timenow = localtime(&now);
 	if(get_futures_data(ReciveText)==0)
-		printf("%d\n",NowPrice);
+		printf("%d\t%s",NowPrice,asctime(timenow));
 }
 
 void main()
 {
-	time_t now;
-	struct tm *timenow;
 	while(1)
 	{
-		time(&now);
-		timenow = localtime(&now);
-		printf("%s\n",asctime(timenow));
 		get_futures_text();
 	}
 }
