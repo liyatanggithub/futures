@@ -110,12 +110,12 @@ void init_time()
 	timenow.tm_hour = 9;
 	timenow.tm_min = 0;
 	timenow.tm_sec = 0;
-	start1=mktime(&timenow);
-	end1=start1+9000;
-	start2=end1+7200;
-	end2=start2+5400;
-	start3=end2+21600;
-	end3=start3+19800;
+	start1=mktime(&timenow);			//9:00
+	end1=start1+9000;					//11:30
+	start2=end1+7200;					//13:30
+	end2=start2+5400;					//15:00
+	start3=end2+21600;					//21:00
+	end3=start3+19800;					//2:30
 }
 
 int time_is_on_trans()
