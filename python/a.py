@@ -5,7 +5,7 @@ from numpy import *
 import string
 import time
 
-LONG=100
+LONG=200
 TIMEVALUE=6.0
 URL="http://hq.sinajs.cn/list=AG1512"
 
@@ -45,6 +45,6 @@ while True:
                 dataMat.pop()
                 lablMat.pop()
                 ws=standRegres(dataMat,lablMat)
-        print ws
+                print ws[1][0]*10000
         #print GetStr+'%f' % NowTime
         #print GetStr[65:69]
