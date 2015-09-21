@@ -6,7 +6,7 @@ Created on Jan 8, 2011
 from numpy import *
 
 def loadDataSet(fileName):      #general function to parse tab -delimited floats
-    numFeat = len(open(fileName).readline().split('\t')) - 1 #get number of fields 
+    numFeat = len(open(fileName).readline().split('\t')) - 1 #get number of fields
     dataMat = []; labelMat = []
     fr = open(fileName)
     for line in fr.readlines():
@@ -67,7 +67,7 @@ def ridgeRegres(xMat,yMat,lam=0.2):
         return
     ws = denom.I * (xMat.T*yMat)
     return ws
-    
+
 def ridgeTest(xArr,yArr):
     xMat = mat(xArr); yMat=mat(yArr).T
     yMean = mean(yMat,0)
@@ -100,7 +100,7 @@ def stageWise(xArr,yArr,eps=0.01,numIt=100):
     ws = zeros((n,1)); wsTest = ws.copy(); wsMax = ws.copy()
     for i in range(numIt):
         print ws.T
-        lowestError = inf; 
+        lowestError = inf;
         for j in range(n):
             for sign in [-1,1]:
                 wsTest = ws.copy()
@@ -142,7 +142,7 @@ def stageWise(xArr,yArr,eps=0.01,numIt=100):
 #        i += 1
 #        currentRow = soup.findAll('table', r="%d" % i)
 #    fw.close()
-    
+
 from time import sleep
 import json
 import urllib2
@@ -166,7 +166,7 @@ def searchForSet(retX, retY, setNum, yr, numPce, origPrc):
                     retX.append([yr, numPce, newFlag, origPrc])
                     retY.append(sellingPrice)
         except: print 'problem with item %d' % i
-    
+
 def setDataCollect(retX, retY):
     searchForSet(retX, retY, 8288, 2006, 800, 49.99)
     searchForSet(retX, retY, 10030, 2002, 3096, 269.99)
@@ -174,9 +174,9 @@ def setDataCollect(retX, retY):
     searchForSet(retX, retY, 10181, 2007, 3428, 199.99)
     searchForSet(retX, retY, 10189, 2008, 5922, 299.99)
     searchForSet(retX, retY, 10196, 2009, 3263, 249.99)
-    
+
 def crossValidation(xArr,yArr,numVal=10):
-    m = len(yArr)                           
+    m = len(yArr)
     indexList = range(m)
     errorMat = zeros((numVal,30))#create error mat 30columns numVal rows
     for i in range(numVal):
@@ -184,7 +184,7 @@ def crossValidation(xArr,yArr,numVal=10):
         testX = []; testY = []
         random.shuffle(indexList)
         for j in range(m):#create training set based on first 90% of values in indexList
-            if j < m*0.9: 
+            if j < m*0.9:
                 trainX.append(xArr[indexList[j]])
                 trainY.append(yArr[indexList[j]])
             else:

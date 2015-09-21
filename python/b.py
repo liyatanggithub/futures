@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 def ifMax(a,Arr):
-    if len(Arr)>=2*a-1:
-        if Arr[a-1]==max(Arr[:2*a]):
+    if len(Arr)>=2*a+1:
+        if Arr[a]==max(Arr[:2*a+1]):
             print "a is max"
             return 1
         else:
@@ -12,8 +12,8 @@ def ifMax(a,Arr):
     return 0
 
 def ifMin(a,Arr):
-    if len(Arr)>=2*a-1:
-        if Arr[a-1]==min(Arr[:2*a]):
+    if len(Arr)>=2*a+1:
+        if Arr[a]==min(Arr[:2*a+1]):
             print "a is min"
             return 1
         else:

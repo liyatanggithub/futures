@@ -35,9 +35,9 @@ while True:
         except:
             print "Get URL ERROR"
         else:
-            f=open(FileName,"a")
-            f.writelines("%f," % NowTime + GetStr)
-            f.close()
+           # f=open(FileName,"a")
+           # f.writelines("%f," % NowTime + GetStr)
+           # f.close()
 
             dataMat.insert(0,([1.0,NowTime-FirstTime]))
             lablMat.insert(0,(string.atof(GetStr[65:69])))
