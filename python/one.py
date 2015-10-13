@@ -19,7 +19,7 @@ CountNum=0
 More=0
 Empty=0
 
-Account={'InitMoney':1000.0,'Crash':1000.0,'FutureNum':0,'NowMoney':1000.0,'Profit':0.0,'BuyPrice':0.0}
+Account={'InitMoney':1000.0,'Crash':1000.0,'FutureNum':0,'AllMoney':1000.0,'OneProfit':0.0,'Profit':0.0,'BuyPrice':0,'SellPrice':0}
 
 while True:
     NowTime=time.time()
@@ -41,19 +41,68 @@ while True:
 
                 TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(int(NowTime)))
                 if dataMat[0]>max(dataMat[1:]) and More==0:
-                    print TimeStyle+" 买多"
-                    print '最新价:'+dataMat[0]
-                    print '账户余额:'+Account['Crash']
+                    print "********************************************************************************"
+                    print '时间\t'+TimeStyle
+                    print "方向\t买多"
+                    print '买入价\t'+dataMat[0]
+                    print "***************************************"
+                    print '账户余额\t'+Account['Crash']+'\t账户总额\t'+Account['AllMoney']+'\t盈利\t'+Account['Profit']
+                    Account['BuyPrice']=dataMat[0]
+                    Account['SellPrice']=0
+                    Account['FutureNum']=1
+                    Account['Crash']=Account['Crash']-219.9
+                    Account['OneProfit']=0.0
+                    Account['AllMoney']=Account['Crash']+180
+                    Account['Profit']=Account['AllMoney']-Account['InitMoney']
+                    print '账户余额\t'+Account['Crash']+'\t账户总额\t'+Account['AllMoney']+'\t盈利\t'+Account['Profit']
+                    print "********************************************************************************"
                     More=1
                 if dataMat[0]<min(dataMat[1:SHORT]) and More==1:
-                    print dataMat
-                    print TimeStyle+" Sell more"
+                    print "********************************************************************************"
+                    print '时间\t'+TimeStyle
+                    print "方向\t卖多"
+                    print '卖出价\t'+dataMat[0]
+                    print "***************************************"
+                    print '账户余额\t'+Account['Crash']+'\t账户总额\t'+Account['AllMoney']+'\t盈利\t'+Account['Profit']
+                    Account['SellPrice']=dataMat[0]
+                    Account['FutureNum']=0
+                    Account['OneProfit']=(Account['SellPrice']-Account['BuyPrice'])*30
+                    Account['Crash']=Account['Crash']+180+Account['OneProfit']
+                    Account['AllMoney']=Account['Crash']
+                    Account['Profit']=Account['AllMoney']-Account['InitMoney']
+                    print '账户余额\t'+Account['Crash']+'\t账户总额\t'+Account['AllMoney']+'\t盈利\t'+Account['Profit']+'\t单笔盈亏\t'+Account['OneProfit']
+                    print "********************************************************************************"
                     More=0
                 if dataMat[0]<min(dataMat[1:]) and Empty==0:
-                    print dataMat
-                    print TimeStyle+" Buy Empty"
+                    print "********************************************************************************"
+                    print '时间\t'+TimeStyle
+                    print "方向\t买空"
+                    print '买入价\t'+dataMat[0]
+                    print "***************************************"
+                    print '账户余额\t'+Account['Crash']+'\t账户总额\t'+Account['AllMoney']+'\t盈利\t'+Account['Profit']
+                    Account['BuyPrice']=dataMat[0]
+                    Account['SellPrice']=0
+                    Account['FutureNum']=-1
+                    Account['Crash']=Account['Crash']-219.9
+                    Account['OneProfit']=0.0
+                    Account['AllMoney']=Account['Crash']+180
+                    Account['Profit']=Account['AllMoney']-Account['InitMoney']
+                    print '账户余额\t'+Account['Crash']+'\t账户总额\t'+Account['AllMoney']+'\t盈利\t'+Account['Profit']
+                    print "********************************************************************************"
                     Empty=1
                 if dataMat[0]>max(dataMat[1:SHORT]) and Empty==1:
-                    print dataMat
-                    print TimeStyle+" Sell Empty"
+                    print "********************************************************************************"
+                    print '时间\t'+TimeStyle
+                    print "方向\t卖空"
+                    print '卖出价\t'+dataMat[0]
+                    print "***************************************"
+                    print '账户余额\t'+Account['Crash']+'\t账户总额\t'+Account['AllMoney']+'\t盈利\t'+Account['Profit']
+                    Account['SellPrice']=dataMat[0]
+                    Account['FutureNum']=0
+                    Account['OneProfit']=(Account['BuyPrice']-Account['SellPrice'])*30
+                    Account['Crash']=Account['Crash']+180+Account['OneProfit']
+                    Account['AllMoney']=Account['Crash']
+                    Account['Profit']=Account['AllMoney']-Account['InitMoney']
+                    print '账户余额\t'+Account['Crash']+'\t账户总额\t'+Account['AllMoney']+'\t盈利\t'+Account['Profit']+'\t单笔盈亏\t'+Account['OneProfit']
+                    print "********************************************************************************"
                     Empty=0
