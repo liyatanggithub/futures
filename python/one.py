@@ -18,6 +18,9 @@ dataMat=[]
 CountNum=0
 More=0
 Empty=0
+
+Account={'InitMoney':1000.0,'Crash':1000.0,'FutureNum':0,'NowMoney':1000.0,'Profit':0.0,'BuyPrice':0.0}
+
 while True:
     NowTime=time.time()
     if (NowTime-LastTime)>=TIMEVALUE:
@@ -38,8 +41,9 @@ while True:
 
                 TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(int(NowTime)))
                 if dataMat[0]>max(dataMat[1:]) and More==0:
-                    print dataMat
-                    print TimeStyle+" Buy more"
+                    print TimeStyle+" 买多"
+                    print '最新价:'+dataMat[0]
+                    print '账户余额:'+Account['Crash']
                     More=1
                 if dataMat[0]<min(dataMat[1:SHORT]) and More==1:
                     print dataMat
@@ -49,7 +53,6 @@ while True:
                     print dataMat
                     print TimeStyle+" Buy Empty"
                     Empty=1
-                    print dataMat
                 if dataMat[0]>max(dataMat[1:SHORT]) and Empty==1:
                     print dataMat
                     print TimeStyle+" Sell Empty"
