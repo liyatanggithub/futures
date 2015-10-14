@@ -19,7 +19,6 @@ LastTime=NowTime
 FirstTime=NowTime
 #FileName=str(NowTime)
 dataMat=[]
-CountNum=0
 More=0
 Empty=0
 
@@ -28,7 +27,6 @@ Account={'InitMoney':1000.0,'Crash':1000.0,'FutureNum':0,'AllMoney':1000.0,'OneP
 while True:
     NowTime=time.time()
     if (NowTime-LastTime)>=TIMEVALUE:
-        CountNum += 1
         LastTime=NowTime
         try:
             GetStr=urllib2.urlopen(URL).read()
@@ -41,7 +39,7 @@ while True:
 
             dataMat.insert(0,(string.atoi(GetStr[65:69])))
             print dataMat
-            if CountNum>LONG:
+            if len(dataMat)==LONG:
                 dataMat.pop()
 
                 TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(int(NowTime)))
@@ -82,6 +80,7 @@ while True:
                     print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
                     print "********************************************************************************"
                     More=1
+                    continue
                 if dataMat[0]<min(dataMat[1:SHORT]) and More==1:
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
@@ -92,12 +91,13 @@ while True:
                     Account['SellPrice']=dataMat[0]
                     Account['FutureNum']=0
                     Account['OneProfit']=(Account['SellPrice']-Account['BuyPrice'])*30-39.9
-                    Account['Crash']=Account['Crash']+180+Account['OneProfit']
+                    Account['Crash']=Account['Crash']+180+Account['OneProfit']+39.9
                     Account['AllMoney']=Account['Crash']
                     Account['Profit']=Account['AllMoney']-Account['InitMoney']
                     print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']+'\t单笔盈亏\t'.decode('gbk')+'%f'%Account['OneProfit']
                     print "********************************************************************************"
                     More=0
+                    continue
                 if dataMat[0]<min(dataMat[1:]) and Empty==0:
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
@@ -115,6 +115,7 @@ while True:
                     print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
                     print "********************************************************************************"
                     Empty=1
+                    continue
                 if dataMat[0]>max(dataMat[1:SHORT]) and Empty==1:
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
@@ -125,9 +126,10 @@ while True:
                     Account['SellPrice']=dataMat[0]
                     Account['FutureNum']=0
                     Account['OneProfit']=(Account['BuyPrice']-Account['SellPrice'])*30-39.9
-                    Account['Crash']=Account['Crash']+180+Account['OneProfit']
+                    Account['Crash']=Account['Crash']+180+Account['OneProfit']+39.9
                     Account['AllMoney']=Account['Crash']
                     Account['Profit']=Account['AllMoney']-Account['InitMoney']
                     print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']+'\t单笔盈亏\t'.decode('gbk')+'%f'%Account['OneProfit']
                     print "********************************************************************************"
                     Empty= 0
+                    continue
