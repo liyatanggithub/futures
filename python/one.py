@@ -1,7 +1,9 @@
 #!/usr/bin/python
 #coding=utf-8
 
-from urllib import urlopen
+#from urllib import urlopen
+import urllib2
+import socket
 #from numpy import *
 import string
 import time
@@ -11,6 +13,7 @@ SHORT=15
 TIMEVALUE=6.0
 URL="http://hq.sinajs.cn/list=AG1512"
 
+socket.setdefaulttimeout(4)
 NowTime=float(int(time.time()))
 LastTime=NowTime
 FirstTime=NowTime
@@ -28,8 +31,8 @@ while True:
         CountNum += 1
         LastTime=NowTime
         try:
-            GetStr=urlopen(URL).read()
-        except:
+            GetStr=urllib2.urlopen(URL).read()
+        except :
             print "Get URL ERROR"
         else:
             #f=open(FileName,"a")
@@ -37,37 +40,38 @@ while True:
             #f.close()
 
             dataMat.insert(0,(string.atoi(GetStr[65:69])))
+            print dataMat
             if CountNum>LONG:
                 dataMat.pop()
 
+                TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(int(NowTime)))
                 if Account['FutureNum'] != 0 :
                     if (dataMat[0]-Account['BuyPrice'])*30 >= 180 or (dataMat[0]-Account['BuyPrice'])*30 <= -180 :
                         print "********************************************************************************"
-                        print '鏃堕棿\t'.decode('gbk')+TimeStyle
-                        print "鏂瑰悜\t婧㈠嚭娓呬粨".decode('gbk')
-                        print '娓呬粨浠穃t'.decode('gbk')+dataMat[0]
+                        print '时间\t'.decode('gbk')+TimeStyle
+                        print '方向\t溢出清仓'.decode('gbk')
+                        print '清仓价\t'.decode('gbk')+'%d'%dataMat[0]
                         print "***************************************"
-                        print '璐︽埛浣欓\t'.decode('gbk')+Account['Crash']+'\t璐︽埛鎬婚\t'.decode('gbk')+Account['AllMoney']+'\t鐩堝埄\t'.decode('gbk')+Account['Profit']
+                        print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
                         Account['BuyPrice']=0
                         Account['SellPrice']=0
                         Account['FutureNum']=0
                         Account['OneProfit']=-219.9
                         Account['AllMoney']=Account['Crash']
                         Account['Profit']=Account['AllMoney']-Account['InitMoney']
-                        print '璐︽埛浣欓\t'.decode('gbk')+Account['Crash']+'\t璐︽埛鎬婚\t'.decode('gbk')+Account['AllMoney']+'\t鐩堝埄\t'.decode('gbk')+Account['Profit']+'\t鍗曠瑪鐩堜簭\t'.decode('gbk')+Account['OneProfit']
+                        print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']+'\t单笔盈亏\t'.decode('gbk')+'%f'%Account['OneProfit']
                         print "********************************************************************************"
                         More=0
                         Empty= 0
                         continue
 
-                TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(int(NowTime)))
                 if dataMat[0]>max(dataMat[1:]) and More==0:
                     print "********************************************************************************"
-                    print '鏃堕棿\t'.decode('gbk')+TimeStyle
-                    print "鏂瑰悜\t涔板".decode('gbk')
-                    print '涔板叆浠穃t'.decode('gbk')+dataMat[0]
+                    print '时间\t'.decode('gbk')+TimeStyle
+                    print '方向\t买多'.decode('gbk')
+                    print '买入价\t'.decode('gbk')+'%d'%dataMat[0]
                     print "***************************************"
-                    print '璐︽埛浣欓\t'.decode('gbk')+Account['Crash']+'\t璐︽埛鎬婚\t'.decode('gbk')+Account['AllMoney']+'\t鐩堝埄\t'.decode('gbk')+Account['Profit']
+                    print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
                     Account['BuyPrice']=dataMat[0]
                     Account['SellPrice']=0
                     Account['FutureNum']=1
@@ -75,32 +79,32 @@ while True:
                     Account['OneProfit']=0.0
                     Account['AllMoney']=Account['Crash']+180
                     Account['Profit']=Account['AllMoney']-Account['InitMoney']
-                    print '璐︽埛浣欓\t'.decode('gbk')+Account['Crash']+'\t璐︽埛鎬婚\t'.decode('gbk')+Account['AllMoney']+'\t鐩堝埄\t'.decode('gbk')+Account['Profit']
+                    print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
                     print "********************************************************************************"
                     More=1
                 if dataMat[0]<min(dataMat[1:SHORT]) and More==1:
                     print "********************************************************************************"
-                    print '鏃堕棿\t'.decode('gbk')+TimeStyle
-                    print "鏂瑰悜\t鍗栧".decode('gbk')
-                    print '鍗栧嚭浠穃t'.decode('gbk')+dataMat[0]
+                    print '时间\t'.decode('gbk')+TimeStyle
+                    print '方向\t卖多'.decode('gbk')
+                    print '卖出价\t'.decode('gbk')+'%d'%dataMat[0]
                     print "***************************************"
-                    print '璐︽埛浣欓\t'.decode('gbk')+Account['Crash']+'\t璐︽埛鎬婚\t'.decode('gbk')+Account['AllMoney']+'\t鐩堝埄\t'.decode('gbk')+Account['Profit']
+                    print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
                     Account['SellPrice']=dataMat[0]
                     Account['FutureNum']=0
                     Account['OneProfit']=(Account['SellPrice']-Account['BuyPrice'])*30-39.9
                     Account['Crash']=Account['Crash']+180+Account['OneProfit']
                     Account['AllMoney']=Account['Crash']
                     Account['Profit']=Account['AllMoney']-Account['InitMoney']
-                    print '璐︽埛浣欓\t'.decode('gbk')+Account['Crash']+'\t璐︽埛鎬婚\t'.decode('gbk')+Account['AllMoney']+'\t鐩堝埄\t'.decode('gbk')+Account['Profit']+'\t鍗曠瑪鐩堜簭\t'.decode('gbk')+Account['OneProfit']
+                    print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']+'\t单笔盈亏\t'.decode('gbk')+'%f'%Account['OneProfit']
                     print "********************************************************************************"
                     More=0
                 if dataMat[0]<min(dataMat[1:]) and Empty==0:
                     print "********************************************************************************"
-                    print '鏃堕棿\t'.decode('gbk')+TimeStyle
-                    print "鏂瑰悜\t涔扮┖".decode('gbk')
-                    print '涔板叆浠穃t'.decode('gbk')+dataMat[0]
+                    print '时间\t'.decode('gbk')+TimeStyle
+                    print '方向\t买空'.decode('gbk')
+                    print '买入价\t'.decode('gbk')+'%d'%dataMat[0]
                     print "***************************************"
-                    print '璐︽埛浣欓\t'.decode('gbk')+Account['Crash']+'\t璐︽埛鎬婚\t'.decode('gbk')+Account['AllMoney']+'\t鐩堝埄\t'.decode('gbk')+Account['Profit']
+                    print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
                     Account['BuyPrice']=dataMat[0]
                     Account['SellPrice']=0
                     Account['FutureNum']=-1
@@ -108,22 +112,22 @@ while True:
                     Account['OneProfit']=0.0
                     Account['AllMoney']=Account['Crash']+180
                     Account['Profit']=Account['AllMoney']-Account['InitMoney']
-                    print '璐︽埛浣欓\t'.decode('gbk')+Account['Crash']+'\t璐︽埛鎬婚\t'.decode('gbk')+Account['AllMoney']+'\t鐩堝埄\t'.decode('gbk')+Account['Profit']
+                    print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
                     print "********************************************************************************"
                     Empty=1
                 if dataMat[0]>max(dataMat[1:SHORT]) and Empty==1:
                     print "********************************************************************************"
-                    print '鏃堕棿\t'.decode('gbk')+TimeStyle
-                    print "鏂瑰悜\t鍗栫┖".decode('gbk')
-                    print '鍗栧嚭浠穃t'.decode('gbk')+dataMat[0]
+                    print '时间\t'.decode('gbk')+TimeStyle
+                    print '方向\t卖空'.decode('gbk')
+                    print '卖出价\t'.decode('gbk')+'%d'%dataMat[0]
                     print "***************************************"
-                    print '璐︽埛浣欓\t'.decode('gbk')+Account['Crash']+'\t璐︽埛鎬婚\t'.decode('gbk')+Account['AllMoney']+'\t鐩堝埄\t'.decode('gbk')+Account['Profit']
+                    print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
                     Account['SellPrice']=dataMat[0]
                     Account['FutureNum']=0
                     Account['OneProfit']=(Account['BuyPrice']-Account['SellPrice'])*30-39.9
                     Account['Crash']=Account['Crash']+180+Account['OneProfit']
                     Account['AllMoney']=Account['Crash']
                     Account['Profit']=Account['AllMoney']-Account['InitMoney']
-                    print '璐︽埛浣欓\t'.decode('gbk')+Account['Crash']+'\t璐︽埛鎬婚\t'.decode('gbk')+Account['AllMoney']+'\t鐩堝埄\t'.decode('gbk')+Account['Profit']+'\t鍗曠瑪鐩堜簭\t'.decode('gbk')+Account['OneProfit']
+                    print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']+'\t单笔盈亏\t'.decode('gbk')+'%f'%Account['OneProfit']
                     print "********************************************************************************"
                     Empty= 0
