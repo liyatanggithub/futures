@@ -46,7 +46,7 @@ while True:
                 if Account['AllMoney'] < 219.9 :
                     break
                 TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(int(NowTime)))
-                if (Account['FutureNum']==1 and (dataMat[0]-Account['BuyPrice'])*30 >= 180) or (Account['FutureNum']==-1 and (dataMat[0]-Account['BuyPrice'])*30 <= -180) :
+                if (Account['FutureNum']==-1 and (dataMat[0]-Account['BuyPrice'])*30 >= 180) or (Account['FutureNum']==1 and (dataMat[0]-Account['BuyPrice'])*30 <= -180) :
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
                     print '方向\t溢出清仓'.decode('gbk')
