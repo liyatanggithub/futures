@@ -43,6 +43,8 @@ while True:
             if len(dataMat)==LONG:
                 dataMat.pop()
 
+                if Account['AllMoney'] < 219.9 :
+                    break
                 TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(int(NowTime)))
                 if (Account['FutureNum']==1 and (dataMat[0]-Account['BuyPrice'])*30 >= 180) or (Account['FutureNum']==-1 and (dataMat[0]-Account['BuyPrice'])*30 <= -180) :
                     print "********************************************************************************"
