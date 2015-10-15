@@ -44,25 +44,24 @@ while True:
                 dataMat.pop()
 
                 TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(int(NowTime)))
-                if Account['FutureNum'] != 0 :
-                    if (dataMat[0]-Account['BuyPrice'])*30 >= 180 or (dataMat[0]-Account['BuyPrice'])*30 <= -180 :
-                        print "********************************************************************************"
-                        print '时间\t'.decode('gbk')+TimeStyle
-                        print '方向\t溢出清仓'.decode('gbk')
-                        print '清仓价\t'.decode('gbk')+'%d'%dataMat[0]
-                        print "***************************************"
-                        print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
-                        Account['BuyPrice']=0
-                        Account['SellPrice']=0
-                        Account['FutureNum']=0
-                        Account['OneProfit']=-219.9
-                        Account['AllMoney']=Account['Crash']
-                        Account['Profit']=Account['AllMoney']-Account['InitMoney']
-                        print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']+'\t单笔盈亏\t'.decode('gbk')+'%f'%Account['OneProfit']
-                        print "********************************************************************************"
-                        More=0
-                        Empty= 0
-                        continue
+                if (Account['FutureNum']==1 and (dataMat[0]-Account['BuyPrice'])*30 >= 180) or (Account['FutureNum']==-1 and (dataMat[0]-Account['BuyPrice'])*30 <= -180) :
+                    print "********************************************************************************"
+                    print '时间\t'.decode('gbk')+TimeStyle
+                    print '方向\t溢出清仓'.decode('gbk')
+                    print '清仓价\t'.decode('gbk')+'%d'%dataMat[0]
+                    print "***************************************"
+                    print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
+                    Account['BuyPrice']=0
+                    Account['SellPrice']=0
+                    Account['FutureNum']=0
+                    Account['OneProfit']=-219.9
+                    Account['AllMoney']=Account['Crash']
+                    Account['Profit']=Account['AllMoney']-Account['InitMoney']
+                    print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']+'\t单笔盈亏\t'.decode('gbk')+'%f'%Account['OneProfit']
+                    print "********************************************************************************"
+                    More=0
+                    Empty= 0
+                    continue
 
                 if dataMat[0]>max(dataMat[1:]) and More==0:
                     More=1
