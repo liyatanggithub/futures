@@ -11,6 +11,7 @@ import time
 LONG=30
 SHORT=15
 TIMEVALUE=6.0
+INITMONEY=1000.0
 URL="http://hq.sinajs.cn/list=AG1512"
 
 socket.setdefaulttimeout(4)
@@ -22,7 +23,7 @@ dataMat=[]
 More=0
 Empty=0
 
-Account={'InitMoney':1000.0,'Crash':1000.0,'FutureNum':0,'AllMoney':1000.0,'OneProfit':0.0,'Profit':0.0,'BuyPrice':0,'SellPrice':0}
+Account={'InitMoney':INITMONEY,'Crash':INITMONEY,'FutureNum':0,'AllMoney':INITMONEY,'OneProfit':0.0,'Profit':0.0,'BuyPrice':0,'SellPrice':0}
 
 while True:
     NowTime=time.time()
