@@ -64,7 +64,39 @@ while True:
                         Empty= 0
                         continue
 
-                if dataMat[0]<min(dataMat[1:SHORT]) and More==1:
+                if dataMat[0]>max(dataMat[1:]) and More==0:
+                    More=1
+                    print "********************************************************************************"
+                    print '时间\t'.decode('gbk')+TimeStyle
+                    print '预备购多'.decode('gbk')
+                    print "********************************************************************************"
+                    continue
+                if More>0 :
+                    More=More+1
+                    if More==12:
+                        print "********************************************************************************"
+                        print '时间\t'.decode('gbk')+TimeStyle
+                        print '取消预备购多'.decode('gbk')
+                        print "********************************************************************************"
+                        More=0
+                        continue
+                if dataMat[0]<min(dataMat[1:]) and Empty==0:
+                    print "********************************************************************************"
+                    print '时间\t'.decode('gbk')+TimeStyle
+                    print '预备购空'.decode('gbk')
+                    print "********************************************************************************"
+                    Empty=1
+                    continue
+                if Empty>0 :
+                    Empty=Empty+1
+                    if Empty==12:
+                        print "********************************************************************************"
+                        print '时间\t'.decode('gbk')+TimeStyle
+                        print '取消预备购空'.decode('gbk')
+                        print "********************************************************************************"
+                        Empty=0
+                        continue
+                if dataMat[0]<min(dataMat[1:SHORT]) and More==-1:
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
                     print '方向\t卖多'.decode('gbk')
@@ -81,7 +113,7 @@ while True:
                     print "********************************************************************************"
                     More=0
                     continue
-                if dataMat[0]>max(dataMat[1:SHORT]) and Empty==1:
+                if dataMat[0]>max(dataMat[1:SHORT]) and Empty==-1:
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
                     print '方向\t卖空'.decode('gbk')
@@ -98,7 +130,7 @@ while True:
                     print "********************************************************************************"
                     Empty= 0
                     continue
-                if dataMat[0]>max(dataMat[1:]) and More==0:
+                if dataMat[0]>max(dataMat[1:]) and More>0:
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
                     print '方向\t买多'.decode('gbk')
@@ -114,9 +146,9 @@ while True:
                     Account['Profit']=Account['AllMoney']-Account['InitMoney']
                     print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
                     print "********************************************************************************"
-                    More=1
+                    More=-1
                     continue
-                if dataMat[0]<min(dataMat[1:]) and Empty==0:
+                if dataMat[0]<min(dataMat[1:]) and Empty>0:
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
                     print '方向\t买空'.decode('gbk')
@@ -132,5 +164,5 @@ while True:
                     Account['Profit']=Account['AllMoney']-Account['InitMoney']
                     print '账户余额\t'.decode('gbk')+'%f'%Account['Crash']+'\t账户总额\t'.decode('gbk')+'%f'%Account['AllMoney']+'\t盈利\t'.decode('gbk')+'%f'%Account['Profit']
                     print "********************************************************************************"
-                    Empty=1
+                    Empty=-1
                     continue
