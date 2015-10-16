@@ -66,6 +66,38 @@ while True:
                     continue
 
                 if dataMat[0]<min(dataMat[1:SHORT]) and More==-1:
+                    More=-2
+                    print "********************************************************************************"
+                    print '时间\t'.decode('gbk')+TimeStyle
+                    print '预备卖多'.decode('gbk')
+                    print "********************************************************************************"
+                    continue
+                if More<-1 :
+                    More=More-1
+                    if More==-7:
+                        print "********************************************************************************"
+                        print '时间\t'.decode('gbk')+TimeStyle
+                        print '取消预备卖多'.decode('gbk')
+                        print "********************************************************************************"
+                        More=-1
+                        continue
+                if dataMat[0]>max(dataMat[1:SHORT]) and Empty==-1:
+                    print "********************************************************************************"
+                    print '时间\t'.decode('gbk')+TimeStyle
+                    print '预备卖空'.decode('gbk')
+                    print "********************************************************************************"
+                    Empty=-2
+                    continue
+                if Empty<-1 :
+                    Empty=Empty-1
+                    if Empty==-7:
+                        print "********************************************************************************"
+                        print '时间\t'.decode('gbk')+TimeStyle
+                        print '取消预备卖空'.decode('gbk')
+                        print "********************************************************************************"
+                        Empty=-1
+                        continue
+                if dataMat[0]<min(dataMat[1:SHORT]) and More<-1:
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
                     print '方向\t卖多'.decode('gbk')
@@ -82,7 +114,7 @@ while True:
                     print "********************************************************************************"
                     More=0
                     continue
-                if dataMat[0]>max(dataMat[1:SHORT]) and Empty==-1:
+                if dataMat[0]>max(dataMat[1:SHORT]) and Empty<-1:
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
                     print '方向\t卖空'.decode('gbk')
@@ -108,7 +140,7 @@ while True:
                     continue
                 if More>0 :
                     More=More+1
-                    if More==12:
+                    if More==11:
                         print "********************************************************************************"
                         print '时间\t'.decode('gbk')+TimeStyle
                         print '取消预备购多'.decode('gbk')
@@ -124,7 +156,7 @@ while True:
                     continue
                 if Empty>0 :
                     Empty=Empty+1
-                    if Empty==12:
+                    if Empty==11:
                         print "********************************************************************************"
                         print '时间\t'.decode('gbk')+TimeStyle
                         print '取消预备购空'.decode('gbk')
