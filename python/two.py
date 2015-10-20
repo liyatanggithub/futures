@@ -77,7 +77,7 @@ while True:
                 dataMat[0].pop(0)
 
                 TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S")
-                if dataMat[1][-1]>max(dataMat[1][:-2]) and More==0:
+                if dataMat[1][-1]>max(dataMat[1][:-1]) and More==0:
                     More=1
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
@@ -93,7 +93,7 @@ while True:
                         print "********************************************************************************"
                         More=0
                         continue
-                if dataMat[1][-1]<min(dataMat[1][:-2]) and Empty==0:
+                if dataMat[1][-1]<min(dataMat[1][:-1]) and Empty==0:
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
                     print '预备购空'.decode('gbk')
@@ -109,7 +109,7 @@ while True:
                         print "********************************************************************************"
                         Empty=0
                         continue
-                if dataMat[1][-1]>max(dataMat[1][:-2]) and More>0:
+                if dataMat[1][-1]>max(dataMat[1][:-1]) and More>0:
                     print "********************************************************************************"
                     print '时间\t'.decode('gbk')+TimeStyle
                     print '方向\t买多'.decode('gbk')
