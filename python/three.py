@@ -64,7 +64,13 @@ while True:
             if Aaa == 0 :
                 Aaa = string.atoi(GetStr[65:69])
                 continue
+
             if Aaa != string.atoi(GetStr[65:69]) and Bbb == 0 :
+                Bbb = string.atoi(GetStr[65:69])
+                continue
+
+            if Aaa != string.atoi(GetStr[65:69]) and Bbb != string.atoi(GetStr[65:69]) :
+                Aaa = Bbb
                 Bbb = string.atoi(GetStr[65:69])
 
                 TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S")
@@ -82,8 +88,3 @@ while True:
                     plt.axis([0, xMax, yMin, yMax])
                 plt.plot(dataMat[0], dataMat[1],color="blue", linewidth=1.0, linestyle="-")
                 plt.pause(0.00001)
-
-                continue
-            if Aaa != string.atoi(GetStr[65:69]) and Bbb != string.atoi(GetStr[65:69]) :
-                Aaa = string.atoi(GetStr[65:69])
-                Bbb = 0
