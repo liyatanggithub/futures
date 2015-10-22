@@ -41,6 +41,7 @@ m210=time.mktime(time.strptime('2000-01-01 21:00:00',"%Y-%m-%d %H:%M:%S"))
 Account={'InitMoney':INITMONEY,'Crash':INITMONEY,'FutureNum':0,'AllMoney':INITMONEY,'OneProfit':0.0,'Profit':0.0,'BuyPrice':0,'SellPrice':0}
 
 while True:
+    plt.pause(0.00001)
     cpStrNowTime=time.strftime("%Y-%m-%d %H:%M:%S")
     cpListNowTime=list(cpStrNowTime)
     cpListNowTime[:10]=['2','0','0','0','-','0','1','-','0','1']
@@ -60,13 +61,29 @@ while True:
         except :
             print "Get URL ERROR"
         else:
-            plt.pause(0.00001)
             if Aaa == 0 :
                 Aaa = string.atoi(GetStr[65:69])
                 continue
 
             if Aaa != string.atoi(GetStr[65:69]) and Bbb == 0 :
                 Bbb = string.atoi(GetStr[65:69])
+
+                TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S")
+                print TimeStyle+"\t%f"%((Aaa + Bbb)/2.0)
+                dataMat[1].append((Aaa + Bbb)/2.0)
+                dataMat[0].append(dataMat[0][-1]+1)
+                if dataMat[0][-1]>=xMax :
+                    xMax = xMax +100
+                    plt.axis([0, xMax, yMin, yMax])
+                if dataMat[1][-1]<=yMin :
+                    yMin = dataMat[1][-1]-10
+                    plt.axis([0, xMax, yMin, yMax])
+                if dataMat[1][-1]>=yMax :
+                    yMax = dataMat[1][-1]+10
+                    plt.axis([0, xMax, yMin, yMax])
+                plt.plot(dataMat[0], dataMat[1],color="blue", linewidth=1.0, linestyle="-")
+                plt.pause(0.00001)
+
                 continue
 
             if Aaa != string.atoi(GetStr[65:69]) and Bbb != string.atoi(GetStr[65:69]) :
