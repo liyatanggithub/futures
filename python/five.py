@@ -9,10 +9,8 @@ import string
 import time
 import matplotlib.pyplot as plt
 
-LONG=30
-SHORT=15
+THRESHOLD=2
 TIMEVALUE=6.0
-INITMONEY=1000.0
 URL="http://hq.sinajs.cn/list=AG1512"
 
 xMax=100
@@ -24,13 +22,10 @@ LastTime=NowTime
 FirstTime=NowTime
 #FileName=str(NowTime)
 dataMat=[[0],[0]]
-High=[]
-Low=[]
-More=0
-Empty=0
+MaxMin=[]
 Aaa=0
 Bbb=0
-State=0
+Ccc=0
 
 #m00=time.mktime(time.strptime('2000-01-01 00:00:00',"%Y-%m-%d %H:%M:%S"))
 m23=time.mktime(time.strptime('2000-01-01 02:30:00',"%Y-%m-%d %H:%M:%S"))
@@ -40,8 +35,6 @@ m133=time.mktime(time.strptime('2000-01-01 13:30:00',"%Y-%m-%d %H:%M:%S"))
 m150=time.mktime(time.strptime('2000-01-01 15:00:00',"%Y-%m-%d %H:%M:%S"))
 m210=time.mktime(time.strptime('2000-01-01 21:00:00',"%Y-%m-%d %H:%M:%S"))
 #m235=time.mktime(time.strptime('2000-01-01 23:59:59',"%Y-%m-%d %H:%M:%S"))
-
-Account={'InitMoney':INITMONEY,'Crash':INITMONEY,'FutureNum':0,'AllMoney':INITMONEY,'OneProfit':0.0,'Profit':0.0,'BuyPrice':0,'SellPrice':0}
 
 while True:
     plt.pause(0.00001)
@@ -64,37 +57,39 @@ while True:
         except :
             print "Get URL ERROR"
         else:
-            if Aaa == 0 :
+            if Aaa == string.atoi(GetStr[65:69]) or Bbb == string.atoi(GetStr[65:69]) or Ccc == string.atoi(GetStr[65:69]) :
+                continue
+            if Ccc < string.atoi(GetStr[65:69]) :
+                Ccc = string.atoi(GetStr[65:69])
+                Bbb = Ccc-1
+                Aaa = Bbb-1
+            if Aaa > string.atoi(GetStr[65:69]) :
                 Aaa = string.atoi(GetStr[65:69])
-                continue
+                Bbb = Aaa+1
+                Ccc = Bbb+1
 
-            if Aaa != string.atoi(GetStr[65:69]) and Bbb == 0 :
-                Bbb = string.atoi(GetStr[65:69])
-                continue
+            TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S")
+            print TimeStyle+"\t%f"%Bbb
+            dataMat[1].append(Bbb)
+            dataMat[0].append(dataMat[0][-1]+1)
+            if dataMat[0][-1]>=xMax :
+                xMax = xMax +100
+                plt.axis([0, xMax, yMin, yMax])
+            if dataMat[1][-1]<=yMin :
+                yMin = dataMat[1][-1]-10
+                plt.axis([0, xMax, yMin, yMax])
+            if dataMat[1][-1]>=yMax :
+                yMax = dataMat[1][-1]+10
+                plt.axis([0, xMax, yMin, yMax])
+                plt.axis([0, xMax, yMin, yMax])
+            plt.plot(dataMat[0], dataMat[1],color="blue", linewidth=1.0, linestyle="-")
+            plt.pause(0.00001)
 
-            if Aaa != string.atoi(GetStr[65:69]) and Bbb != string.atoi(GetStr[65:69]) :
-                Aaa = Bbb
-                Bbb = string.atoi(GetStr[65:69])
-
-                TimeStyle=time.strftime("%Y-%m-%d %H:%M:%S")
-                print TimeStyle+"\t%f"%((Aaa + Bbb)/2.0)
-                dataMat[1].append((Aaa + Bbb)/2.0)
-                dataMat[0].append(dataMat[0][-1]+1)
-                if dataMat[0][-1]>=xMax :
-                    xMax = xMax +100
-                    plt.axis([0, xMax, yMin, yMax])
-                if dataMat[1][-1]<=yMin :
-                    yMin = dataMat[1][-1]-10
-                    plt.axis([0, xMax, yMin, yMax])
-                if dataMat[1][-1]>=yMax :
-                    yMax = dataMat[1][-1]+10
-                    plt.axis([0, xMax, yMin, yMax])
-                plt.plot(dataMat[0], dataMat[1],color="blue", linewidth=1.0, linestyle="-")
-                plt.pause(0.00001)
-
-                if dataMat[-2] > dataMat[-1] and dataMat[-2] > dataMat[-3] :
-                    High.append(dataMat[-2])
-                if dataMat[-2] < dataMat[-1] and dataMat[-2] < dataMat[-3] :
-                    Low.append(dataMat[-2])
-                if len(High)<3 or len(Low)<3 :
-                    continue
+            if (dataMat[-2] > dataMat[-1] and dataMat[-2] > dataMat[-3]) or (dataMat[-2] < dataMat[-1] and dataMat[-2] < dataMat[-3]) :
+                MaxMin.append(Bbb)
+                if len(MaxMin) > 2 and MaxMin[-1] > MaxMin[-2] :
+                    if (MaxMin[-3]-MaxMin[-2])/(MaxMin[-1]-MaxMin[-2]) > THRESHOLD :
+                        print "Buy Empty"
+                if len(MaxMin) > 2 and MaxMin[-1] < MaxMin[-2] :
+                    if (MaxMin[-2]-MaxMin[-3])/(MaxMin[-2]-MaxMin[-1]) > THRESHOLD :
+                        print "Buy More"
