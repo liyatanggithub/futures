@@ -89,12 +89,12 @@ while True:
             plt.pause(0.00001)
 
             if MoreOrEmpty == 0 :
-                if len(dataMat) > 2 and (dataMat[-2] < dataMat[-1] and dataMat[-2] < dataMat[-3]) :
+                if len(dataMat[1]) > 2 and dataMat[1][-2] < dataMat[1][-1] :
                     print "Buy More\t"+" %d"%NowPrice
                     BuyPrice=NowPrice
                     MoreOrEmpty=1
                     Line=0
-                if len(dataMat) > 2 and (dataMat[-2] > dataMat[-1] and dataMat[-2] > dataMat[-3]) :
+                if len(dataMat[1]) > 2 and dataMat[1][-2] > dataMat[1][-1] :
                     print "Buy Empty\t"+"%d"%NowPrice
                     BuyPrice=NowPrice
                     MoreOrEmpty=-1
