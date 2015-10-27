@@ -9,7 +9,6 @@ import string
 import time
 import matplotlib.pyplot as plt
 
-THRESHOLD=2
 TIMEVALUE=6.0
 URL="http://hq.sinajs.cn/list=AG1512"
 
@@ -22,10 +21,13 @@ LastTime=NowTime
 FirstTime=NowTime
 #FileName=str(NowTime)
 dataMat=[[0],[0]]
-MaxMin=[]
 Aaa=0
 Bbb=0
 Ccc=0
+Money=1000
+BuyPrice=0
+MoreOrEmpty=0
+Line=0
 
 #m00=time.mktime(time.strptime('2000-01-01 00:00:00',"%Y-%m-%d %H:%M:%S"))
 m23=time.mktime(time.strptime('2000-01-01 02:30:00',"%Y-%m-%d %H:%M:%S"))
@@ -57,14 +59,15 @@ while True:
         except :
             print "Get URL ERROR"
         else:
-            if Aaa == string.atoi(GetStr[65:69]) or Bbb == string.atoi(GetStr[65:69]) or Ccc == string.atoi(GetStr[65:69]) :
+            NowPrice = string.atoi(GetStr[65:69])
+            if Aaa == NowPrice or Bbb == NowPrice or Ccc == NowPrice :
                 continue
-            if Ccc < string.atoi(GetStr[65:69]) :
-                Ccc = string.atoi(GetStr[65:69])
+            if Ccc < NowPrice :
+                Ccc = NowPrice
                 Bbb = Ccc-1
                 Aaa = Bbb-1
-            if Aaa > string.atoi(GetStr[65:69]) :
-                Aaa = string.atoi(GetStr[65:69])
+            if Aaa > NowPrice :
+                Aaa = NowPrice
                 Bbb = Aaa+1
                 Ccc = Bbb+1
 
@@ -85,11 +88,31 @@ while True:
             plt.plot(dataMat[0], dataMat[1],color="blue", linewidth=1.0, linestyle="-")
             plt.pause(0.00001)
 
-            if (dataMat[-2] > dataMat[-1] and dataMat[-2] > dataMat[-3]) or (dataMat[-2] < dataMat[-1] and dataMat[-2] < dataMat[-3]) :
-                MaxMin.append(Bbb)
-                if len(MaxMin) > 2 and MaxMin[-1] > MaxMin[-2] :
-                    if (MaxMin[-3]-MaxMin[-2])/(MaxMin[-1]-MaxMin[-2]) > THRESHOLD :
-                        print "Buy Empty"
-                if len(MaxMin) > 2 and MaxMin[-1] < MaxMin[-2] :
-                    if (MaxMin[-2]-MaxMin[-3])/(MaxMin[-2]-MaxMin[-1]) > THRESHOLD :
-                        print "Buy More"
+            if MoreOrEmpty == 0 :
+                if len(dataMat) > 2 and (dataMat[-2] < dataMat[-1] and dataMat[-2] < dataMat[-3]) :
+                    print "Buy More\t"+" %d"%NowPrice
+                    BuyPrice=NowPrice
+                    MoreOrEmpty=1
+                    Line=0
+                if len(dataMat) > 2 and (dataMat[-2] > dataMat[-1] and dataMat[-2] > dataMat[-3]) :
+                    print "Buy Empty\t"+"%d"%NowPrice
+                    BuyPrice=NowPrice
+                    MoreOrEmpty=-1
+                    Line=0
+
+            if MoreOrEmpty == 1 :
+                if NowPrice > (BuyPrice+5) or (Line != 0 and Line < NowPrice) :
+                    Line = NowPrice
+                if (Line == 0 and NowPrice < (BuyPrice-2)) or (Line != 0 and NowPrice < (Line-3)) :
+                    print "Sell More with Price\t"+"%d"%NowPrice
+                    print "Money\t"+"%d"%Money+"+("+"%d"%NowPrice+"-"+"%d"%BuyPrice+")="+"%d"%(Money+NowPrice-BuyPrice)
+                    Money=Money+NowPrice-BuyPrice
+                    MoreOrEmpty=0
+            if MoreOrEmpty == -1 :
+                if NowPrice < (BuyPrice-5) or (Line != 0 and Line > NowPrice) :
+                    Line = NowPrice
+                if (Line == 0 and NowPrice > (BuyPrice+2)) or (Line != 0 and NowPrice > (Line+3)) :
+                    print "Sell Empty with Price\t"+"%d"%NowPrice
+                    print "Money\t"+"%d"%Money+"-("+"%d"%NowPrice+"-"+"%d"%BuyPrice+")="+"%d"%(Money-NowPrice+BuyPrice)
+                    Money=Money-NowPrice+BuyPrice
+                    MoreOrEmpty=0
