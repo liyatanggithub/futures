@@ -60,8 +60,12 @@ while True:
                 print "*****************Low*****************"
             if NowPrice >= Ccc :
                 print "*****************High*****************"
-            if NowPrice > Aaa and NowPrice < Ccc :
+            if NowPrice >= Aaa and NowPrice <= Ccc :
                 continue
+            if Bbb == 0 :
+                Bbb = NowPrice
+                Ccc = Bbb+3
+                Aaa = Bbb-3
             if Ccc < NowPrice :
                 Ccc = NowPrice
                 Bbb = Ccc-3

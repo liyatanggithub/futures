@@ -101,7 +101,7 @@ while True:
                     Line=0
 
             if MoreOrEmpty == 1 :
-                if NowPrice > (BuyPrice+5) or (Line != 0 and Line < NowPrice) :
+                if (Line == 0 and NowPrice > (BuyPrice+5)) or (Line != 0 and Line < NowPrice) :
                     Line = NowPrice
                 if (Line == 0 and NowPrice < (BuyPrice-2)) or (Line != 0 and NowPrice < (Line-3)) :
                     print "Sell More with Price\t"+"%d"%NowPrice
@@ -109,7 +109,7 @@ while True:
                     Money=Money+NowPrice-BuyPrice
                     MoreOrEmpty=0
             if MoreOrEmpty == -1 :
-                if NowPrice < (BuyPrice-5) or (Line != 0 and Line > NowPrice) :
+                if (Line == 0 and NowPrice < (BuyPrice-5)) or (Line != 0 and Line > NowPrice) :
                     Line = NowPrice
                 if (Line == 0 and NowPrice > (BuyPrice+2)) or (Line != 0 and NowPrice > (Line+3)) :
                     print "Sell Empty with Price\t"+"%d"%NowPrice
