@@ -39,14 +39,14 @@ m210=time.mktime(time.strptime('2000-01-01 21:00:00',"%Y-%m-%d %H:%M:%S"))
 #m235=time.mktime(time.strptime('2000-01-01 23:59:59',"%Y-%m-%d %H:%M:%S"))
 
 while True:
-    plt.pause(0.00001)
+    #plt.pause(0.00001)
     cpStrNowTime=time.strftime("%Y-%m-%d %H:%M:%S")
     cpListNowTime=list(cpStrNowTime)
     cpListNowTime[:10]=['2','0','0','0','-','0','1','-','0','1']
     cpStr2000Time=''.join(cpListNowTime)
     cp2000Time=time.mktime(time.strptime(cpStr2000Time,"%Y-%m-%d %H:%M:%S"))
     if (cp2000Time>=m23 and cp2000Time<=m90) or (cp2000Time>=m113 and cp2000Time<=m133) or (cp2000Time>=m150 and cp2000Time<=m210):
-        print "休市时间\t".decode('gbk')+cpStrNowTime
+        #print "休市时间\t".decode('gbk')+cpStrNowTime
         time.sleep(10)
         continue
 
@@ -75,18 +75,18 @@ while True:
             print TimeStyle+"\t%f"%Bbb
             dataMat[1].append(Bbb)
             dataMat[0].append(dataMat[0][-1]+1)
-            if dataMat[0][-1]>=xMax :
-                xMax = xMax +100
-                plt.axis([0, xMax, yMin, yMax])
-            if dataMat[1][-1]<=yMin :
-                yMin = dataMat[1][-1]-10
-                plt.axis([0, xMax, yMin, yMax])
-            if dataMat[1][-1]>=yMax :
-                yMax = dataMat[1][-1]+10
-                plt.axis([0, xMax, yMin, yMax])
-                plt.axis([0, xMax, yMin, yMax])
-            plt.plot(dataMat[0], dataMat[1],color="blue", linewidth=1.0, linestyle="-")
-            plt.pause(0.00001)
+            #if dataMat[0][-1]>=xMax :
+            #    xMax = xMax +100
+            #    plt.axis([0, xMax, yMin, yMax])
+            #if dataMat[1][-1]<=yMin :
+            #    yMin = dataMat[1][-1]-10
+            #    plt.axis([0, xMax, yMin, yMax])
+            #if dataMat[1][-1]>=yMax :
+            #    yMax = dataMat[1][-1]+10
+            #    plt.axis([0, xMax, yMin, yMax])
+            #    plt.axis([0, xMax, yMin, yMax])
+            #plt.plot(dataMat[0], dataMat[1],color="blue", linewidth=1.0, linestyle="-")
+            #plt.pause(0.00001)
 
             if MoreOrEmpty == 1 :
                 if (Line == 0 and NowPrice > (BuyPrice+5)) or (Line != 0 and Line < NowPrice) :
