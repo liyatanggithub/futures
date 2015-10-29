@@ -88,6 +88,23 @@ while True:
             plt.plot(dataMat[0], dataMat[1],color="blue", linewidth=1.0, linestyle="-")
             plt.pause(0.00001)
 
+            if MoreOrEmpty == 1 :
+                if (Line == 0 and NowPrice > (BuyPrice+5)) or (Line != 0 and Line < NowPrice) :
+                    Line = NowPrice
+                if (Line == 0 and NowPrice < (BuyPrice-1)) or (Line != 0 and NowPrice < (Line-2)) :
+                    print "Sell More with Price\t"+"%d"%NowPrice
+                    print "Money\t"+"%d"%Money+"+("+"%d"%NowPrice+"-"+"%d"%BuyPrice+")="+"%d"%(Money+NowPrice-BuyPrice)
+                    Money=Money+NowPrice-BuyPrice
+                    MoreOrEmpty=0
+            if MoreOrEmpty == -1 :
+                if (Line == 0 and NowPrice < (BuyPrice-5)) or (Line != 0 and Line > NowPrice) :
+                    Line = NowPrice
+                if (Line == 0 and NowPrice > (BuyPrice+1)) or (Line != 0 and NowPrice > (Line+2)) :
+                    print "Sell Empty with Price\t"+"%d"%NowPrice
+                    print "Money\t"+"%d"%Money+"-("+"%d"%NowPrice+"-"+"%d"%BuyPrice+")="+"%d"%(Money-NowPrice+BuyPrice)
+                    Money=Money-NowPrice+BuyPrice
+                    MoreOrEmpty=0
+
             if MoreOrEmpty == 0 :
                 if len(dataMat[1]) > 2 and dataMat[1][-2] < dataMat[1][-1] :
                     print "Buy More\t"+" %d"%NowPrice
@@ -99,20 +116,3 @@ while True:
                     BuyPrice=NowPrice
                     MoreOrEmpty=-1
                     Line=0
-
-            if MoreOrEmpty == 1 :
-                if (Line == 0 and NowPrice > (BuyPrice+5)) or (Line != 0 and Line < NowPrice) :
-                    Line = NowPrice
-                if (Line == 0 and NowPrice < (BuyPrice-2)) or (Line != 0 and NowPrice < (Line-3)) :
-                    print "Sell More with Price\t"+"%d"%NowPrice
-                    print "Money\t"+"%d"%Money+"+("+"%d"%NowPrice+"-"+"%d"%BuyPrice+")="+"%d"%(Money+NowPrice-BuyPrice)
-                    Money=Money+NowPrice-BuyPrice
-                    MoreOrEmpty=0
-            if MoreOrEmpty == -1 :
-                if (Line == 0 and NowPrice < (BuyPrice-5)) or (Line != 0 and Line > NowPrice) :
-                    Line = NowPrice
-                if (Line == 0 and NowPrice > (BuyPrice+2)) or (Line != 0 and NowPrice > (Line+3)) :
-                    print "Sell Empty with Price\t"+"%d"%NowPrice
-                    print "Money\t"+"%d"%Money+"-("+"%d"%NowPrice+"-"+"%d"%BuyPrice+")="+"%d"%(Money-NowPrice+BuyPrice)
-                    Money=Money-NowPrice+BuyPrice
-                    MoreOrEmpty=0
