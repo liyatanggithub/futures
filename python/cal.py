@@ -21,6 +21,7 @@ MoreOrEmpty=0
 Line=0
 
 Vertex=[]
+Earn=0
 
 while True:
     s=f.readline()
@@ -61,27 +62,24 @@ while True:
         Vertex.append(dataMat[1][1])
     if len(dataMat[1]) > 2 and ((dataMat[1][-2] > dataMat[1][-1] and dataMat[1][-2] > dataMat[1][-3]) or (dataMat[1][-2] < dataMat[1][-1] and dataMat[1][-2] < dataMat[1][-3])) :
         Vertex.append(dataMat[1][-2])
+        Earn=0
 
-    if MoreOrEmpty == 1 :
-        #if Line == 0 or (Line != 0 and Line < NowPrice) :
-        #    Line = NowPrice
-        #if NowPrice < (Line-2) :
-        if len(Vertex) > 1 and Vertex[-1] > Vertex[-2] and Bbb < (Vertex[-1]+Vertex[-2])/2.0 :
-            print "Sell More with Price\t"+"%d"%NowPrice
-            print "Money\t"+"%d"%Money+"+("+"%d"%NowPrice+"-"+"%d"%BuyPrice+")="+"%d"%(Money+NowPrice-BuyPrice)
-            Money=Money+NowPrice-BuyPrice
-            MoreOrEmpty=0
-    if MoreOrEmpty == -1 :
-        #if Line == 0 or (Line != 0 and Line > NowPrice) :
-        #    Line = NowPrice
-        #if NowPrice > (Line+2) :
-        if len(Vertex) > 1 and Vertex[-1] < Vertex[-2] and Bbb > (Vertex[-1]+Vertex[-2])/2.0 :
-            print "Sell Empty with Price\t"+"%d"%NowPrice
-            print "Money\t"+"%d"%Money+"-("+"%d"%NowPrice+"-"+"%d"%BuyPrice+")="+"%d"%(Money-NowPrice+BuyPrice)
-            Money=Money-NowPrice+BuyPrice
-            MoreOrEmpty=0
+    if MoreOrEmpty == 1 and len(Vertex) > 1 and Vertex[-1] > Vertex[-2] and Bbb < Vertex[-2] :
+        print "Sell More with Price\t"+"%d"%NowPrice
+        print "Money\t"+"%d"%Money+"+("+"%d"%NowPrice+"-"+"%d"%BuyPrice+")="+"%d"%(Money+NowPrice-BuyPrice)
+        Money=Money+NowPrice-BuyPrice
+        MoreOrEmpty=0
+        if NowPrice >= BuyPrice :
+            Earn=1
+    if MoreOrEmpty == -1 and len(Vertex) > 1 and Vertex[-1] < Vertex[-2] and Bbb > Vertex[-2] :
+        print "Sell Empty with Price\t"+"%d"%NowPrice
+        print "Money\t"+"%d"%Money+"-("+"%d"%NowPrice+"-"+"%d"%BuyPrice+")="+"%d"%(Money-NowPrice+BuyPrice)
+        Money=Money-NowPrice+BuyPrice
+        MoreOrEmpty=0
+        if NowPrice <= BuyPrice :
+            Earn=1
 
-    if MoreOrEmpty == 0 :
+    if MoreOrEmpty == 0 and Earn == 0 :
         if len(dataMat[1]) > 2 and dataMat[1][-2] < dataMat[1][-1] :
             print "Buy More\t"+" %d"%NowPrice
             BuyPrice=NowPrice
