@@ -18,10 +18,10 @@ yMax=0
 Money=1000
 BuyPrice=0
 MoreOrEmpty=0
-Line=0
+LineHigh=0
+LineLow=10000
 
 Vertex=[]
-Earn=0
 
 while True:
     s=f.readline()
@@ -62,34 +62,39 @@ while True:
         Vertex.append(dataMat[1][1])
     if len(dataMat[1]) > 2 and ((dataMat[1][-2] > dataMat[1][-1] and dataMat[1][-2] > dataMat[1][-3]) or (dataMat[1][-2] < dataMat[1][-1] and dataMat[1][-2] < dataMat[1][-3])) :
         Vertex.append(dataMat[1][-2])
-        Earn=0
+        if MoreOrEmpty == 1 and Vertex[-1] > LineHigh :
+            LineHigh = Vertex[-1]
+            LineLow = Vertex[-2]
+        if MoreOrEmpty == -1 and Vertex[-1] < LineLow :
+            LineLow = Vertex[-1]
+            LineHigh = Vertex[-2]
 
-    if MoreOrEmpty == 1 and len(Vertex) > 1 and Vertex[-1] > Vertex[-2] and Bbb < Vertex[-2] :
+    if MoreOrEmpty == 1 and len(Vertex) > 1  and Bbb < LineLow :
         print "Sell More with Price\t"+"%d"%NowPrice
         print "Money\t"+"%d"%Money+"+("+"%d"%NowPrice+"-"+"%d"%BuyPrice+")="+"%d"%(Money+NowPrice-BuyPrice)
         Money=Money+NowPrice-BuyPrice
         MoreOrEmpty=0
-        if NowPrice >= BuyPrice :
-            Earn=1
-    if MoreOrEmpty == -1 and len(Vertex) > 1 and Vertex[-1] < Vertex[-2] and Bbb > Vertex[-2] :
+        LineHigh=0
+        LineLow=10000
+    if MoreOrEmpty == -1 and len(Vertex) > 1 and Bbb > LineHigh :
         print "Sell Empty with Price\t"+"%d"%NowPrice
         print "Money\t"+"%d"%Money+"-("+"%d"%NowPrice+"-"+"%d"%BuyPrice+")="+"%d"%(Money-NowPrice+BuyPrice)
         Money=Money-NowPrice+BuyPrice
         MoreOrEmpty=0
-        if NowPrice <= BuyPrice :
-            Earn=1
+        LineHigh=0
+        LineLow=10000
 
-    if MoreOrEmpty == 0 and Earn == 0 :
+    if MoreOrEmpty == 0 :
         if len(dataMat[1]) > 2 and dataMat[1][-2] < dataMat[1][-1] :
             print "Buy More\t"+" %d"%NowPrice
             BuyPrice=NowPrice
             MoreOrEmpty=1
-            Line=0
+            LineLow=Vertex[-1]
         if len(dataMat[1]) > 2 and dataMat[1][-2] > dataMat[1][-1] :
             print "Buy Empty\t"+"%d"%NowPrice
             BuyPrice=NowPrice
             MoreOrEmpty=-1
-            Line=0
+            LineHigh=Vertex[-1]
 f.close()
 while True:
     time.sleep(1)
